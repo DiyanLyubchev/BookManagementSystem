@@ -10,7 +10,7 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace BookManagementSystem.Data.Migrations
 {
     [DbContext(typeof(BookManagementSystemContext))]
-    [Migration("20200429063038_Initial")]
+    [Migration("20200430111205_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,11 +110,111 @@ namespace BookManagementSystem.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BookManagementSystem.Data.Model.BookLending", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int?>("BookId");
+
+                    b.Property<DateTime>("TakeDate")
+                        .HasColumnName("TAKEDATE")
+                        .HasColumnType("DATE");
+
+                    b.Property<int?>("UserAccountId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserAccountId");
+
+                    b.ToTable("BOOKLENDING");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BookId = 1,
+                            TakeDate = new DateTime(2020, 4, 30, 14, 12, 4, 814, DateTimeKind.Local).AddTicks(8650),
+                            UserAccountId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BookId = 2,
+                            TakeDate = new DateTime(2020, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserAccountId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BookId = 3,
+                            TakeDate = new DateTime(2020, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserAccountId = 1
+                        });
+                });
+
+            modelBuilder.Entity("BookManagementSystem.Data.Model.UserAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnName("FIRSTNAME")
+                        .HasColumnType("VARCHAR2(40)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnName("LASTNAME")
+                        .HasColumnType("VARCHAR2(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("USERACCOUNT");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FirstName = "Dimitur",
+                            LastName = "Sokolov"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FirstName = "Kaloqn",
+                            LastName = "Ivanov"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FirstName = "Emiliqn",
+                            LastName = "Nikolov"
+                        });
+                });
+
             modelBuilder.Entity("BookManagementSystem.Data.Model.Author", b =>
                 {
                     b.HasOne("BookManagementSystem.Data.Model.Book", "Book")
                         .WithMany("Authors")
                         .HasForeignKey("BookId");
+                });
+
+            modelBuilder.Entity("BookManagementSystem.Data.Model.BookLending", b =>
+                {
+                    b.HasOne("BookManagementSystem.Data.Model.Book", "Book")
+                        .WithMany("BookLendings")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("BookManagementSystem.Data.Model.UserAccount", "UserAccount")
+                        .WithMany("BookLendings")
+                        .HasForeignKey("UserAccountId");
                 });
 #pragma warning restore 612, 618
         }

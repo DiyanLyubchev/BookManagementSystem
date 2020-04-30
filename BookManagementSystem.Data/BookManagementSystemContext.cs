@@ -14,6 +14,8 @@ namespace BookManagementSystem.Data
         public virtual DbSet<Book> Books { get; set; }
 
         public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<UserAccount> UserAccounts { get; set; }
+        public virtual DbSet<BookLending> BookLendings { get; set; }
 
         public BookManagementSystemContext(DbContextOptions<BookManagementSystemContext> options)
             : base(options)
@@ -23,10 +25,13 @@ namespace BookManagementSystem.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ConfigurationsAuthor();
+            builder.ConfigurationsBookLending();
             builder.ConfigurationsBook();
+            builder.ConfigurationsUser();
             builder.SeedAutor();
             builder.SeedBook();
-
+            builder.SeedUser();
+            builder.SeedBookLend();
             base.OnModelCreating(builder);
         }
     }

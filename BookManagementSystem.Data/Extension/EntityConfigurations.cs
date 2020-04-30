@@ -54,5 +54,59 @@ namespace BookManagementSystem.Data.Extension
                  .WithOne(book => book.Book);
              });
         }
+        public static ModelBuilder ConfigurationsUser(this ModelBuilder builder)
+        {
+            return builder.Entity<UserAccount>(entity =>
+            {
+                entity.ToTable("USERACCOUNT");
+
+                entity.HasKey(key => key.Id);
+
+                entity.Property(id => id.Id)
+                .HasColumnName("ID")
+                .HasColumnType("NUMBER(10)");
+
+                entity.Property(firstName => firstName.FirstName)
+                 .IsRequired()
+                 .HasColumnName("FIRSTNAME")
+                 .HasColumnType("VARCHAR2(40)");
+
+                entity.Property(lastName => lastName.LastName)
+                   .IsRequired()
+                   .HasColumnName("LASTNAME")
+                   .HasColumnType("VARCHAR2(40)");
+
+                entity.HasMany(book => book.BookLendings)
+                .WithOne(author => author.UserAccount);
+
+            });
+        }
+
+        public static ModelBuilder ConfigurationsBookLending(this ModelBuilder builder)
+        {
+            return builder.Entity<BookLending>(entity =>
+            {
+                entity.ToTable("BOOKLENDING");
+
+                entity.HasKey(key => key.Id);
+
+                entity.Property(id => id.Id)
+                   .HasColumnName("ID")
+                   .HasColumnType("NUMBER(10)");
+
+                entity.Property(year => year.TakeDate)
+                .HasColumnName("TAKEDATE")
+                .HasColumnType("DATE");
+
+                entity.HasOne(user => user.UserAccount)
+                .WithMany(blanding => blanding.BookLendings)
+                .HasForeignKey(userId => userId.UserAccountId);
+
+                entity.HasOne(book => book.Book)
+                .WithMany(landing => landing.BookLendings)
+                .HasForeignKey(bookId => bookId.BookId);
+            });
+        }
+
     }
 }

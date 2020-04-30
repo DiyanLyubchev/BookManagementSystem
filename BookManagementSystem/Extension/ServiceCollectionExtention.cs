@@ -10,6 +10,8 @@ namespace BookManagementSystem.Extension
         {
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IUserAccountService, UserAccountService>();
+            services.AddScoped<IBookLendingService, BookLendingService>();
 
             return services;
         }
